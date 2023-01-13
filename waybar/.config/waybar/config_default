@@ -1,0 +1,15 @@
+Limit a configuration to some outputs
+           {
+                "layer": "top",
+                "output": "eDP-1",
+                "modules-left": ["sway/workspaces", "sway/mode"],
+                ...
+
+           }
+
+           {
+                "layer": "top",
+                "output": ["eDP-1", "VGA"],
+                "modules-left": ["sway/workspaces", "sway/mode"],
+                ...
+           }

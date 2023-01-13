@@ -3,20 +3,32 @@
 #
 # Paolo Tosi - \\https:www.github.com\Tosipaolo
 
+#----------------------------------------------------------------------------
 set $mod Mod4
+set $terminal kitty
+#set $lock lock.sh
 
-bindsym $mod+Shift+c exec kitty -e nvim ~/.config/i3/config
+#bindsym $mod+Shift+c exec kitty -e nvim ~/.config/i3/config
 
 # Font for window titles. Will also be used by the bar unless a different font
 font pango:Noto Sans Regular 10
 
 
+
+#----------------------------------------------------------------------------
+#On-startup:
+
+exec --no-startup-id mako
+exec nmcli device set wlan0 autoconnect yes
+
+#----------------------------------------------------------------------------
 #Display management:
 
 set $laptop eDP-1
+set $scrivania DP-3
 
 output $laptop pos 0 0 res 1920x1200
-output DP-3 pos 1920 0 res 2560x1440
+output $scrivania pos 1920 0 res 2560x1440
 exec swaymsg focus output $laptoup
 
 #Clamshell mode
@@ -24,8 +36,14 @@ bindswitch --reload --locked lid:on output $laptop disable
 bindswitch --reload --locked lid:off output $laptop enable
 exec_always /path/to/script.sh
 
+# Wallpaper, background
+output * bg /home/paolo/Pictures/wallpapers/0304.jpg fill
+
+
 #TODO: redshift
 
+
+#----------------------------------------------------------------------------
 
 #INPUT SETUP:
 # default layout
@@ -38,19 +56,44 @@ input "1452:591:Keychron_Keychron_K2" {
    xkb_layout us,it
    }
 
+#----------------------------------------------------------------------------
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+#bindsym $mod+Shift+r restart
+
+#----------------------------------------------------------------------------
+# exit SWAY
+
+set $mode_system System: (l) lock, (e) logout, (s) suspend, (r) reboot, (S) shutdown, (R) UEFI
+mode "$mode_system" {
+    bindsym l exec swaylock -c 134f5c
+    bindsym e exit
+    bindsym s exec --no-startup-id systemctl suspend, mode "default"
+    bindsym r exec --no-startup-id systemctl reboot, mode "default"
+    bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
+    bindsym Shift+r exec --no-startup-id systemctl reboot --firmware-setup, mode "default"
+
+    # return to default mode
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+Shift+e mode "$mode_system"
+#----------------------------------------------------------------------------
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 
 
-
 # start a terminal
-bindsym $mod+Return exec kitty
+bindsym $mod+Return exec $terminal
 bindsym $mod+Shift+Return exec kitty -e ranger
 
 # kill focused window
@@ -58,7 +101,7 @@ bindsym $mod+Shift+q kill
 
 # start rofi 
 bindsym $mod+space exec rofi -show run
-#bindsym $mod+space exec --no-startup-id rofi -show drun -drun-display-format {name} -font "mplus Nerd Font Mono 11" 
+# bindsym $mod+space exec --no-startup-id rofi -show drun -drun-display-format {name} -font "mplus Nerd Font Mono 11" 
 
 # change focus:
 bindsym $mod+Left focus left
@@ -85,8 +128,7 @@ bindsym $mod+f fullscreen toggle
 bindsym $mod+s layout stacking
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
-# sezione aurea
-#bindsym $mod+g exec --no-startup-id "i3altlayout"
+
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
@@ -147,14 +189,6 @@ for_window [class=kitty] focus
 # move wokrspace to monitor
 bindsym $mod+Tab move workspace to output right
 
-# reload the configuration file
-#bindsym $mod+Alt+c reload
-
-# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
-
-# exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
 # keybinding list in editor:
 bindsym $mod+F1 exec xed ~/.config/i3/keybindings
@@ -173,7 +207,7 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 #BINDSYM PROGRAMMI
-bindsym $mod+u exec firefox
+bindsym $mod+b exec firefox
 bindsym $mod+Shift+b exec firefox https://beep.metid.polimi.it/polimi/login
 bindsym $mod+n exec dolphin
 bindsym $mod+o exec nitrogen --restore &
@@ -184,22 +218,13 @@ bindsym $mod+o exec nitrogen --restore &
 bindsym $mod+m exec --no-startup-id mpv $(xsel -b) &
 bindsym $mod+Shift+m exec streamlink --player mpv $(xsel -b) best &
 
-##flameshot
-bindsym Print exec --no-startup-id flameshot gui
+# SCREENSHOT: flameshot
+bindsym Print exec flameshot gui
 
-# SFONDO
-exec --no-startup-id picom --backend glx --experimental-backends
-#exec --no-startup-id feh --bg-scale  /home/paolo/Pictures/pexels-simon-matzinger-1323550.jpg 
-exec --no-startup-id nitrogen --restore &
- for_window [class=".*"] border pixel 4
- hide_edge_borders both
 
-##AUTOSTART
-#dropbox
-#exec ~/.dropbox-dist/dropboxd
-exec nitrogen --restore &
-
-#####GAPS######
+#----------------------------------------------------------------------------
+# GAPS
+smart_gaps on
 
 #change the inner gaps
 bindsym $mod+plus gaps inner current plus 5
@@ -211,6 +236,7 @@ bindsym $mod+shift+plus gaps outer current plus 5
 bindsym $mod+shift+minus gaps outer current minus 5
 bindsym $mod+shift+0 gaps outer current set 0
 
+#----------------------------------------------------------------------------
 # COLORI
 
 set $bg-color            #2f343f
@@ -230,17 +256,15 @@ client.urgent           $urgent-bg-color    $urgent-bg-color   $text-color      
 
 
 
+#----------------------------------------------------------------------------
 #####INFO BAR#####
 
 bar {
-    position bottom
-    status_command i3status
-    mode hide
-    height 44
-    colors {
-      background #242424
-    }
+	id bar1
+	swaybar_command waybar
 }
+
+
 
 #####PLASMA#####
 
