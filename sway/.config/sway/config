@@ -1,5 +1,5 @@
 # 20/04/2021 
-# i3 config file 
+# SWAY config file 
 #
 # Paolo Tosi - \\https:www.github.com\Tosipaolo
 
@@ -11,9 +11,33 @@ bindsym $mod+Shift+c exec kitty -e nvim ~/.config/i3/config
 font pango:Noto Sans Regular 10
 
 
-# NetworkManager is the most popular way to manage wireless networks on Linux,
-# and nm-applet is a desktop environment-independent system tray GUI for it.
-#exec --no-startup-id nm-applet
+#Display management:
+
+set $laptop eDP-1
+
+output $laptop pos 0 0 res 1920x1200
+output DP-3 pos 1920 0 res 2560x1440
+exec swaymsg focus output $laptoup
+
+#Clamshell mode
+bindswitch --reload --locked lid:on output $laptop disable
+bindswitch --reload --locked lid:off output $laptop enable
+exec_always /path/to/script.sh
+
+#TODO: redshift
+
+
+#INPUT SETUP:
+# default layout
+input "1:1:AT_Translated_Set_2_keyboard" {
+   xkb_layout it
+}
+
+# custom layout for an external keyboard
+input "1452:591:Keychron_Keychron_K2" {
+   xkb_layout us,it
+   }
+
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -22,8 +46,8 @@ bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
-# Use Mouse+$mod to drag floating windows to their wanted position
-floating_modifier $mod
+
+
 
 # start a terminal
 bindsym $mod+Return exec kitty
@@ -124,7 +148,7 @@ for_window [class=kitty] focus
 bindsym $mod+Tab move workspace to output right
 
 # reload the configuration file
-bindsym $mod+Alt+c reload
+#bindsym $mod+Alt+c reload
 
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
@@ -149,7 +173,7 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 #BINDSYM PROGRAMMI
-bindsym $mod+b exec firefox
+bindsym $mod+u exec firefox
 bindsym $mod+Shift+b exec firefox https://beep.metid.polimi.it/polimi/login
 bindsym $mod+n exec dolphin
 bindsym $mod+o exec nitrogen --restore &
@@ -234,7 +258,6 @@ for_window [class="krunner"] floating enable; border none
 for_window [class="Kmix"] floating enable; border none
 for_window [class="Klipper"] floating enable; border none
 for_window [class="Plasmoidviewer"] floating enable; border none
-for_window [class="(?i)*nextcloud*"] floating disable
 for_window [class="plasmashell" window_type="notification"] border none, move right 700px, move down 450px
 no_focus [class="plasmashell" window_type="notification"]
 
