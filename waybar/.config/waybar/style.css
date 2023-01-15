@@ -1,97 +1,71 @@
 * {
-    border: none;
-    font-family: "Proxima Nova";
-    font-size: 17px;
-    min-height: 0;
+    border:        none;
+    border-radius: 0;
+    font-family:   Sans;
+    font-size:     15px;
+    box-shadow:    none;
+    text-shadow:   none;
+    transition-duration: 0s;
 }
 
-window#waybar {
-    background: transparent;
-    color: #bebebe;
-}
-.modules-right {
-    margin: 0px 15px 0 0;
-}
-.modules-center {
-    margin: 0px 0 0 0;
-}
-.modules-left {
-    margin: 0px 0 0 8px;
-}
-#keyboard-state,#waybar-mpris,#custom-protonmail,#workspaces,#clock,#mode,#battery,#pulseaudio,#backlight,#network {
-    margin:0px 4px 0 4px;
+window {
+    color:      rgba(217, 216, 216, 1);
+    background: rgba(35, 31, 32, 0.00);
 }
 
-#workspaces button:hover {
-    background: rgba(50,50,50, 0.7);
+window#waybar.solo {
+    color:      rgba(217, 216, 216, 1);
+    background: rgba(35, 31, 32, 0.85);
+}
+
+#workspaces {
+    margin: 0 5px;
 }
 
 #workspaces button {
-    margin: 0px 5px 0 5px;
-    background: transparent;
-    padding: 4px 4px 4px 4px;
-    border-radius: 6px;
+    padding:    0 5px;
+    color:      rgba(217, 216, 216, 0.4);
+}
+
+#workspaces button.visible {
+    color:      rgba(217, 216, 216, 1);
 }
 
 #workspaces button.focused {
-    color: white;
-}
-#mode {
-    padding: 0px 12px 0px 12px;
-    color: black;
-    background: white;
+    border-top: 3px solid rgba(217, 216, 216, 1);
+    border-bottom: 3px solid rgba(217, 216, 216, 0);
 }
 
-@keyframes critical {
-    to {
-    color: rgba(187,56,0, 1);
-    }
+#workspaces button.urgent {
+    color:      rgba(238, 46, 36, 1);
 }
 
-
-#battery.critical:not(.charging) {
-    color:rgba(187,56,0, 1);
-    animation-name: critical;
-    animation-duration: 0.5s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
+#mode, #battery, #cpu, #memory, #network, #pulseaudio, #idle_inhibitor, #backlight, #custom-storage, #custom-spotify, #custom-weather, #custom-mail {
+    margin:     0px 6px 0px 10px;
+    min-width:  25px;
 }
 
 #clock {
-    border-radius: 6px;
-    padding: 4px 6px 0px 0px;
+    margin:     0px 16px 0px 10px;
+    min-width:  140px;
 }
 
-#clock:hover {
-	background: rgba(40,40,40, .95);
-}
- 
-#tray {
-    margin: 7px 15px 0 4px;
-    background: rgba(40,40,40, .65);
-    border-radius: 6px;
-    padding: 1px 5px 1px 5px;
-}
-#custom-protonmail{
-    padding-top:4px;
-    padding-right:4px;
-}
-#custom-protonmail.error {
-    color: darkred;
-}
-#keyboard-state {
-    margin-top: 1px;
-}
-#tray {
-    background-color: #2980b9;
+#battery.warning {
+   color:       rgba(255, 210, 4, 1);
 }
 
-#tray > .passive {
-    -gtk-icon-effect: dim;
+#battery.critical {
+    color:      rgba(238, 46, 36, 1);
 }
 
-#tray > .needs-attention {
-    -gtk-icon-effect: highlight;
-    background-color: #eb4d4b;
+#battery.charging {
+    color:      rgba(217, 216, 216, 1);
+}
+
+#custom-storage.warning {
+    color:      rgba(255, 210, 4, 1);
+}
+
+#custom-storage.critical {
+    color:      rgba(238, 46, 36, 1);
 }

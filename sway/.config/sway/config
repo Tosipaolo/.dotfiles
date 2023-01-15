@@ -13,6 +13,7 @@ set $terminal kitty
 # Font for window titles. Will also be used by the bar unless a different font
 font pango:Noto Sans Regular 10
 
+default_border pixel
 
 
 #----------------------------------------------------------------------------
@@ -43,6 +44,10 @@ output * bg /home/paolo/Pictures/wallpapers/0304.jpg fill
 #TODO: redshift
 
 
+# Backlight:
+
+bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
+bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
 #----------------------------------------------------------------------------
 
 #INPUT SETUP:
@@ -71,7 +76,7 @@ set $mode_system System: (l) lock, (e) logout, (s) suspend, (r) reboot, (S) shut
 mode "$mode_system" {
     bindsym l exec swaylock -c 134f5c
     bindsym e exit
-    bindsym s exec --no-startup-id systemctl suspend, mode "default"
+    bindsym s exec --no-startup-id swaylock -c 134f5c | systemctl suspend, mode "default"
     bindsym r exec --no-startup-id systemctl reboot, mode "default"
     bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
     bindsym Shift+r exec --no-startup-id systemctl reboot --firmware-setup, mode "default"
@@ -80,6 +85,7 @@ mode "$mode_system" {
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
+
 bindsym $mod+Shift+e mode "$mode_system"
 #----------------------------------------------------------------------------
 
@@ -190,9 +196,6 @@ for_window [class=kitty] focus
 bindsym $mod+Tab move workspace to output right
 
 
-# keybinding list in editor:
-bindsym $mod+F1 exec xed ~/.config/i3/keybindings
-
 # resize window
 mode "resize" {
         bindsym Left resize shrink width 10 px or 10 ppt
@@ -208,8 +211,7 @@ bindsym $mod+r mode "resize"
 
 #BINDSYM PROGRAMMI
 bindsym $mod+b exec firefox
-bindsym $mod+Shift+b exec firefox https://beep.metid.polimi.it/polimi/login
-bindsym $mod+n exec dolphin
+bindsym $mod+n exec nemo
 bindsym $mod+o exec nitrogen --restore &
 
 #bindsym $mod+o exec feh --bg-fill /home/paolo/Pictures/pexels-simon-matzinger-1323550.jpg
@@ -218,13 +220,14 @@ bindsym $mod+o exec nitrogen --restore &
 bindsym $mod+m exec --no-startup-id mpv $(xsel -b) &
 bindsym $mod+Shift+m exec streamlink --player mpv $(xsel -b) best &
 
-# SCREENSHOT: flameshot
-bindsym Print exec flameshot gui
+# SCREENSHOT: flameshot TODO, now swappy
 
+# bindsym Print exec flameshot gui
+bindsym Print exec grim -g "$(slurp)" - | swappy -f -
 
 #----------------------------------------------------------------------------
 # GAPS
-smart_gaps on
+#smart_gaps on
 
 #change the inner gaps
 bindsym $mod+plus gaps inner current plus 5
@@ -262,9 +265,17 @@ client.urgent           $urgent-bg-color    $urgent-bg-color   $text-color      
 bar {
 	id bar1
 	swaybar_command waybar
+	mode hide
+    	modifier $mod
 }
 
+#bar{
+#	status_command i3status -c ~/.config/i3status/config
+#}
 
+for_window [title="Volume Control"] floating enable
+for_window [title="Volume Control"] nofocus
+for_window [title="nmtui"] floating enable
 
 #####PLASMA#####
 

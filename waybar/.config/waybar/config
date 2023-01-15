@@ -1,125 +1,189 @@
 {
-    "layer": "top", // Waybar at top layer
-    "position": "top", // Waybar at the bottom of your screen
-    "height": 32, // Waybar height
-    "modules-left": ["sway/workspaces","sway/mode"],
-    "modules-center": ["clock",],
-    "modules-right": ["keyboard-state","custom/protonmail","network","pulseaudio", "battery", "tray"],
-    "sway/workspaces": {
-        "icon": false,   
-        "disable-scroll": true,
-        "all-outputs": false,
-        "format": "<span size='large'>{icon}</span>",
-        "format-icons": {
-            "1": "<span size='135%'>󰛄</span>",
-            "2": "<span size='135%'>󱀡</span>",
-            "3": "<span size='135%'>󰓇</span>",
-            "4": "<span size='135%'>󰎭</span>",
-            "5": "<span size='135%'>󰎱</span>",
-            "6": "<span size='135%'>󰎳</span>",
-            "7": "<span size='135%'>󰎶</span>",
-            "8": "<span size='135%'>󰎹</span>",
-            "9": "<span size='135%'>󰎼</span>",
-            "10":"<span size='135%'>󰽽</span>",
-        }
-    },
+    "layer": "top",
+    "position": "top",
+    "height": 30,
+
+    "modules-left": [
+   	 "sway/workspaces",
+   	 "sway/mode",
+   	 "sway/window",
+	 "tray"
+    ],
+
+    "modules-center": [
+    	 "clock"
+    ],
+
+    "modules-right": [
+         "custom/weather",
+         "custom/storage",
+	 "memory",
+         "backlight",
+         "pulseaudio",
+         "network",
+         "idle_inhibitor",
+         "battery"
+    ],
+
+
+    // -------------------------------------------------------------------------
+    // Modules
+    // -------------------------------------------------------------------------
+
+
+
+
     "sway/mode": {
-        "format": "{}"
+        "format": " {}"
     },
-    "tray": {
-        "icon-size": 18,
-        "spacing": 8
+    "sway/workspaces": {
+        "format": "{name}",
+        "disable-scroll": true
+    },
+    "sway/window": {
+    	"format": "{}",
+        "max-length": 50,
+        "tooltip": true
     },
     "clock": {
-        "format": "{: %I:%M %a %d}",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "format": "{:%a %d %b %H:%M}",
+        "tooltip": true,
+	"calendar-weeks-pos": "right",
+        "today-format": "<span color='#ff6699'><b><u>{}</u></b></span>",
+        "format-calendar": "<span color='#ecc6d9'><b>{}</b></span>",
+        "format-calendar-weeks": "<span color='#99ffdd'><b>W{:%U}</b></span>",
+        "format-calendar-weekdays": "<span color='#ffcc66'><b>{}</b></span>",
+        "on-scroll": {
+                    "calendar": 1
+                     }
     },
     "battery": {
-    "tooltip-format": "{capacity}% \n{time}",
+        "format": "{capacity}% {icon}",
+        "format-alt": "{time} {icon}",
+        "format-icons": ["", "", "", "", ""],
+        "format-charging": "{capacity}% CHAR",
         "interval": 30,
-     "on-scroll-up": "~/.scripts/ChangeBrightness up",
-     "on-scroll-down": "~/.scripts/ChangeBrightness down",
-	"on-click": "~/.scripts/ChangeBrightness 0%",
         "states": {
-            // "good": 95,
-            "warning": 30,
-            "critical": 20
+            "warning": 25,
+            "critical": 10
         },
-        "full-at":  "99",
-        "format": "<span size='100%' rise='600'>{icon}</span>",
-        "format-icons": ["󰂎","󰁺","󰁻","󰁼","󰁽","󰁾","󰁿","󰂀","󰂁","󰂂","󰁹"],
-        "format-critical": "󰂃{capacity}%", // An empty format will hide the module
-        "format-full": "<span size='100%' rise='-1500'>󱟢</span>",
-        "format-charging": "<span size='100%'>󰂄</span>{capacity}%"
+        "tooltip": false
     },
-        "network": {
-	    "interval": 5,
-        "format-linked":"󰤥",
-        "format-wifi": "<span size='103%' rise='600'>{icon}</span>",
-        "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
-        "format-disconnected": "󰤭",
-        "interface": "wlan0",
-	    "tooltip-format-wifi": "{essid}:{signalStrength}\nSpeed:{bandwidthDownBits} \n{ipaddr}"
+    "network": {
+        "format": "{icon}",
+        "format-alt": "{ipaddr}/{cidr} {icon}",
+        "format-alt-click": "click-right",
+        "format-icons": {
+            "wifi": ["", "Wifi:No Internet" ,""],
+            "ethernet": [""],
+            "disconnected": ["WiFi: Not Connected"]
+        },
+        "on-click": "kitty -e nmtui",
+    "tooltip": true,
+    "tooltip-format": "{ifname} via {gwaddr} ",
+    "tooltip-format-wifi": "{essid} ({signalStrength}%) ",
+    "tooltip-format-ethernet": "{ifname} ",
+    "tooltip-format-disconnected": "Disconnected",
+    "max-length": 50
     },
     "pulseaudio": {
-       "tooltip": "{volume}",
-       //"scroll-step": 1,
-       //"on-scroll-up": "~/.scripts/ChangeVolume up",
-       //"on-scroll-down": "~/.scripts/ChangeVolume down",
-        "on-click-right": "pavucontrol",
-       "on-click":"~/.scripts/ChangeVolume mute",
-       "format": "<span size='125%' rise='600'>{icon}</span>",
-       "format-source": "<span size='105%' rise='600'>{icon}</span> {volume}%",
-       "format-muted": "<span size='125%' rise='600'>󰖁</span>",
-       "format-icons": {
-            "headphone": "󰋌",
-            "default": ["󰕿", "󰖀", "󰕾"]
+        "format": " {volume}% {icon}",
+        "format-alt": "{volume} {icon}",
+        "format-alt-click": "click-right",
+        "format-muted": "",
+        "format-icons": {
+            "phone": [" ", " ", " ", " "],
+            "default": ["", "", "", ""]
         },
+        "scroll-step": 10,
+        "on-click": "pavucontrol",
+        "tooltip": false
+    },
+    "memory":{
+	"interval": 5,
+	"format": "  {}%",
+	"states": {
+		"warning": 70,
+		"critical": 90
+	}
+
+
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    "custom/spotify": {
+        "interval": 1,
+        "return-type": "json",
+        "exec": "~/.config/waybar/modules/spotify.sh",
+        "exec-if": "pgrep spotify",
+        "escape": true
+    },
+    "custom/storage": {
+        "format": "{} ",
+        "format-alt": "{percentage}% ",
+        "format-alt-click": "click-right",
+        "return-type": "json",
+        "interval": 60,
+        "exec": "~/.config/waybar/modules/storage.sh"
     },
     "backlight": {
-    "device": "intel_backlight",
-    "format": "<span size='105%' rise='600'>{icon}</span>",
-    "format-icons": ["󰃞","󰃟", "󰃠"],
-    "on-scroll-up": "brightnessctl set 1%+",
-    "on-scroll-down": "brightnessctl set 1%-",
-    "on-click": "wlsunset"
-},
-"custom/protonmail": {
-    "exec": "bar-protonmail -b \u200a",
-    "return-type": "json",
-    "interval": 30,
-    "tooltip": "Open ProtonMail",
-    "format": "{} <span size='108%' >󰇯</span>",
-    "on-click": "xdg-open https://mail.protonmail.com/u/0/all-mail#filter=unread"
-},
+        "format": "{percent}% {icon}",
+        "format-alt-click": "click-right",
+        "format-icons": [""],
+        "on-scroll-down": "light -A 1",
+        "on-scroll-up": "light -U 1"
+    },
+    "custom/weather": {
+        "format": "{}",
+        "format-alt": "{alt}: {}",
+        "format-alt-click": "click-right",
+        "interval": 1800,
+        "return-type": "json",
+        "exec": "~/.config/waybar/modules/weather.sh",
+        "exec-if": "ping wttr.in -c1"
+    },
     "idle_inhibitor": {
         "format": "{icon}",
         "format-icons": {
-            "activated": "",
-            "deactivated": ""
-        }
+            "activated": "",
+            "deactivated": ""
+        },
+        "tooltip": false
     },
-
-    "keyboard-state": {
-        "capslock": true,
-        "format": "<span size='105%' >{icon}</span>",
-        "format-icons": {
-            "locked": "",
-            "unlocked": ""
-        }
+    "custom/mail": {
+        "format": "",
+        "format-alt": "{alt} ",
+        "format-alt-click": "click-right",
+        "interval": 60,
+        "return-type": "json",
+        "exec": "~/.config/waybar/modules/mail.py",
+        "tooltip": false
     },
-"custom/waybar-mpris": {
-    "return-type": "json",
-    "exec": "waybar-mpris --autofocus",
-    "on-click": "waybar-mpris --send toggle",
-    // This option will switch between players on right click.
-        "on-click-right": "waybar-mpris --send player-next",
-    // The options below will switch the selected player on scroll
-        // "on-scroll-up": "waybar-mpris --send player-next",
-        // "on-scroll-down": "waybar-mpris --send player-prev",
-    // The options below will go to next/previous track on scroll
-        // "on-scroll-up": "waybar-mpris --send next",
-        // "on-scroll-down": "waybar-mpris --send prev",
-    "escape": true,
-},
+    "custom/test": {
+        "format": "{}",
+        "exec": "/tmp/test blub",
+        "param": "blah",
+        "interval": 5
+    },
+    "tray": {
+        "icon-size": 18,
+	"spacing": 10
+    }
 }
