@@ -4,7 +4,7 @@
 # Paolo Tosi - \\https:www.github.com\Tosipaolo
 
 set $mod Mod4
-set $terminal kitty
+set $terminal alacritty
 
 bindsym $mod+Shift+c exec $terminal -e nvim ~/.config/i3/config
 
@@ -27,8 +27,8 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec kitty
-bindsym $mod+Shift+Return exec kitty -e ranger
+bindsym $mod+Return exec $terminal
+bindsym $mod+Shift+Return exec $terminal -e ranger
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -119,7 +119,7 @@ assign [class = "Thunderbird"] $ws8
 #assign [class = "mpv"] $ws4
 
 # automatic set focus new window if it opens on another workspace then the current:
-for_window [class=kitty] focus
+for_window [class=$terminal] focus
 
 # move wokrspace to monitor
 bindsym $mod+Tab move workspace to output right
@@ -248,4 +248,5 @@ no_focus [class="plasmashell" window_type="notification"]
 
 
 #killing the existing window that covers everything
-for_window [title="Desktop — Plasma"] kill; floating enable; border none
+# for_window [title="Desktop — Plasma"] kill; floating enable; border none
+for_window [title="Desktop @ QRect.*"] kill; floating enable; border none

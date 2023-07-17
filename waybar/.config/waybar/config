@@ -78,7 +78,7 @@
             "ethernet": [""],
             "disconnected": ["WiFi: Not Connected"]
         },
-        "on-click": "kitty -e nmtui",
+        "on-click": "alacritty -e nmtui",
     "tooltip": true,
     "tooltip-format": "{ifname} via {gwaddr} ",
     "tooltip-format-wifi": "{essid} ({signalStrength}%) ",
