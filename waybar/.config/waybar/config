@@ -4,10 +4,9 @@
     "height": 30,
 
     "modules-left": [
-   	 "sway/workspaces",
-   	 "sway/mode",
-   	 "sway/window",
-	 "tray"
+   	 "hyprland/workspaces",
+   	 "hyprland/mode",
+   	 "hyprland/window"
     ],
 
     "modules-center": [
@@ -22,6 +21,7 @@
          "pulseaudio",
          "network",
          "idle_inhibitor",
+	 "keyboard-state",
          "battery"
     ],
 
@@ -32,18 +32,19 @@
 
 
 
-
     "sway/mode": {
         "format": " {}"
     },
-    "sway/workspaces": {
-        "format": "{name}",
-        "disable-scroll": true
+
+    "hyprland/workspaces": {
+     "format": "{icon}",
+     "on-scroll-up": "hyprctl dispatch workspace e+1",
+     "on-scroll-down": "hyprctl dispatch workspace e-1"
     },
-    "sway/window": {
-    	"format": "{}",
-        "max-length": 50,
-        "tooltip": true
+
+    "hyprland/window": {
+    "max-length": 200,
+    "separate-outputs": true
     },
     "clock": {
         "format": "{:%a %d %b %H:%M}",

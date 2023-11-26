@@ -31,7 +31,7 @@ window#waybar.solo {
     color:      rgba(217, 216, 216, 1);
 }
 
-#workspaces button.focused {
+#workspaces button.active {
     border-top: 3px solid rgba(217, 216, 216, 1);
     border-bottom: 3px solid rgba(217, 216, 216, 0);
 }

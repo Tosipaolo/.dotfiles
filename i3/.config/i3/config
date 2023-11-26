@@ -66,7 +66,8 @@ bindsym $mod+e layout toggle split
 #bindsym $mod+g exec --no-startup-id "i3altlayout"
 
 # toggle tiling / floating
-bindsym $mod+Shift+space floating toggle
+bindsym $mod+Shift+space floating toggle ; [floating class="(mpv|alacritty|kitty)"] resize set 1000 1000 ; move position center
+
 
 # change focus between tiling / floating windows
 #bindsym $mod+space focus mode_toggle
